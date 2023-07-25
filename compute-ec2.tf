@@ -5,7 +5,7 @@ resource "aws_launch_template" "web" {
 
   vpc_security_group_ids = [aws_security_group.web.id]
 
-  user_data = base64encode(templatefile("${path.module}/userdata_web.tpl", {}))
+  user_data = base64encode(templatefile("${path.module}/userscript_app.tpl", {}))
 
   lifecycle {
     create_before_destroy = true
@@ -35,7 +35,7 @@ resource "aws_autoscaling_group" "web" {
 
   tag {
     key                 = "Environment"
-    value               = "dev"
+    value               = "staging"
     propagate_at_launch = true
   }
 
@@ -51,7 +51,7 @@ resource "aws_launch_template" "app" {
 
   vpc_security_group_ids = [aws_security_group.web.id]
 
-  user_data = base64encode(templatefile("${path.module}/userdata_app.tpl", {}))
+  user_data = base64encode(templatefile("${path.module}/userscript_app.tpl", {}))
 
   lifecycle {
     create_before_destroy = true
@@ -82,7 +82,7 @@ resource "aws_autoscaling_group" "app" {
 
   tag {
     key                 = "Environment"
-    value               = "dev"
+    value               = "staging"
     propagate_at_launch = true
   }
 
@@ -100,7 +100,7 @@ resource "aws_lb" "web" {
 
   tags = {
     Terraform   = "true"
-    Environment = "dev"
+    Environment = "staging"
   }
 }
 
@@ -131,7 +131,7 @@ resource "aws_lb" "app" {
 
   tags = {
     Terraform   = "true"
-    Environment = "dev"
+    Environment = "staging"
   }
 }
 
